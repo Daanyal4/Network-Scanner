@@ -1,4 +1,5 @@
 from scapy.all import *
+import netifaces
 
 def scan_network(ip_range):
     devices = []
@@ -9,9 +10,21 @@ def scan_network(ip_range):
     
     for sent, received in result:
         devices.append({'ip':received.psrc, 'mac':received.hwsrc})
-    return devices
+    
+    ip_list = []
+    for interface in netifaces.interfaces():
+        if_addresses = netifaces.ifaddresses(interface)
+        if netifaces.AF_INET in if_addresses:
+            ip_addresses = if_addresses[netifaces.AF_INET]
+            for ip_addresses in ip_addresses:
+                ip_list.append(ip_addresses['addr'])
+                
+    return devices, ip_list
 
 if __name__ == '__main__':
-    ip_range = "192.169.1.0/24"
-    devices = scan_network(ip_range)
+    ip_range = "192.168.175.0/24"
+    devices, ip_list = scan_network(ip_range)
+    print("Devices:")
     print(devices)
+    print("IP addresses:")
+    print(ip_list)
