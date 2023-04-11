@@ -22,7 +22,7 @@ def scan_network(ip_range):
     return devices, ip_list
 
 if __name__ == '__main__':
-    ip_range = "192.168.175.0/24"
+    ip_range = "192.169.175.0/24"
     devices, ip_list = scan_network(ip_range)
     print("Devices:")
     print(devices)
